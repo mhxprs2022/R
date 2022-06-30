@@ -1,0 +1,51 @@
+---
+title: "group_sum"
+output: html_document
+date: '2022-06-30'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Group and Summarize data in R
+### reference:  https://www.r-bloggers.com/2022/06/how-to-group-and-summarize-data-in-r/amp/
+
+```{r echo=TRUE, message=FALSE}
+library(dplyr)
+dim(mtcars)
+head(mtcars)
+
+
+#Example 1: Search for Mean & Median by Group
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(mean_mpg = mean(mpg, na.rm = TRUE))
+
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(median_mpg = median(mpg, na.rm = TRUE))
+
+
+# Example 2: Find Spread Measures by Group
+# The standard deviation, interquartile range, and median absolute deviation 
+# may all be calculated for each group using the following code.
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(sd_mpg = sd(mpg, na.rm = TRUE),
+            iqr_mpg = IQR(mpg, na.rm = TRUE),
+            mad_mpg = mad(mpg, na.rm = TRUE))
+
+#Example 3: Discover Count by Group
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(count_mpg = n(),
+            u_count_mpg = n_distinct(mpg))
+
+
+#Example 4: Calculate Percentile by Group
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(quant90 = quantile(mpg, probs = .9))
+
+```
